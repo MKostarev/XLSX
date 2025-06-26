@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+{% if user.is_authenticated %}
+    <p>Вы вошли как {{ user.username }} | <a href="{% url 'logout' %}">Выйти</a></p>
+{% else %}
+    <a href="{% url 'login' %}">Войти</a> | <a href="{% url 'register' %}">Регистрация</a>
+{% endif %}
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Управление товарами{% endblock %}</title>
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>{% block heading %}Управление товарами{% endblock %}</h1>
+
+        <div class="buttons-container">
+            <!-- Блок для кнопок -->
+            {% block buttons %}
+                <a href="/check_data/" class="btn btn-primary">
+                    <i class="fas fa-box-open"></i> Загруженные товары
+                </a>
+                <a href="/upload_file/" class="btn btn-success">
+                    <i class="fas fa-upload"></i> Загрузить товар
+                </a>
+                <a href="/admin/" class="btn btn-warning" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-user-shield"></i> Админ панель
+                </a>
+            {% endblock %}
+        </div>
+
+        <!-- Блок для контента страниц -->
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>

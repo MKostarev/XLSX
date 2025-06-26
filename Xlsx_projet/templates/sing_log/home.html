@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Главная</title>
+</head>
+<body>
+    <h2>Добро пожаловать!</h2>
+
+<div class="buttons-container">
+    {% block buttons %}
+        <a href="/login/" class="btn btn-primary">
+            <i class="fas fa-box-open"></i> Зайти
+        </a>
+        &nbsp;&nbsp; <!-- Два пробела -->
+        <a href="/register/" class="btn btn-warning">
+            <i class="fas fa-user-shield"></i> Регистрация
+        </a>
+    {% endblock %}
+</div>
+
+
+        <!-- Блок для контента страниц -->
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+</body>
+</html>

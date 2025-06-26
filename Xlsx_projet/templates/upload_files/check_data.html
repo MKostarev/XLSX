@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Загруженные товары</h2>
+<ul>
+{% for product in products %}
+    <li>{{ product.brand }} {{ product.article }} ({{ product.product_group }})</li>
+{% empty %}
+    <li>Товары не найдены</li>
+{% endfor %}
+</ul>
+{% endblock %}

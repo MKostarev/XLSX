@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  django:
+    build: ./Xlsx_projet
+    #command: gunicorn --bind 0.0.0.0:8000 --worker-class bjoern.GunicornWorker your_project.wsgi:application
+    #command: waitress-serve --port=8000 your_project.wsgi:application
+    command: python -m waitress --port=8000 your_project.wsgi:application
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG}
+    volumes:
+      - ./Xlsx_projet:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8000"
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "8000:8000" #localhost:8000
+    depends_on:
+      - django
+    volumes:
+      - ./Xlsx_projet/staticfiles:/app/staticfiles
+      - ./Xlsx_projet/media:/app/media
+
+volumes:
+  postgres_data:
